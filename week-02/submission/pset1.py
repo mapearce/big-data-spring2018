@@ -1,24 +1,24 @@
 #A1: Create a list containing any 4 strings.
 print("Section A")
 myList = ['do','you','like','cheese']
-print("A1: ", myList)
+print(f"A1: {myList}")
 
 #A2: Print the 3rd item in the list - remember how Python indexes lists!
-print("A2:", myList[2])
+print(f"A2: {myList[2]}")
 
 #A3: Print the 1st and 2nd item in the list using [:] index slicing.
-print("A3: ", myList[:2])
+print(f"A3: {myList[:2]}")
 
 #A4: Add a new string with text “last” to the end of the list and print the list.
 myList.append('last')
-print("A4: ", myList)
+print(f"A4: {myList}")
 
 #A5: Get the list length and print it.
-print("A5: ", len(myList))
+print(f"A5: Length of list is {len(myList)}")
 
 #A6: Replace the last item in the list with the string “new” and print
 myList[-1] = 'new'
-print("A6: ", myList,"\n\n\n")
+print(f"A6: {myList} \n\n\n")
 
 #Now entering B territory
 print("Section B")
