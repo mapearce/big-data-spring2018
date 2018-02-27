@@ -62,7 +62,7 @@ import pandas as pd
 # Imports the keys from the python file
 # You may need to change working directory
 import os
-os.chdir('week-04')
+#os.chdir('week-04')
 from twitter_keys import api_key, api_secret
 ```
 
@@ -129,7 +129,16 @@ We also set some variables to store our parameters. First, we specify a location
 We also build our function to include a parameter `write`, which, if `True`, instructs our function to write the returned tweets to a `json` file, the location of which is passed through the `file` parameter. Finally, we can specify a t_max, which is the maximum number of tweets the search should return before stopping---this is low at the moment, because we want to be able to test our function, but we can ratchet it up to download (literally) millions of Tweets.
 
 ```python
-def get_tweets(geo, out_file, search_term = '', tweet_per_query = 100, tweet_max = 150, since_id = None, max_id = -1, write = False):
+def get_tweets(
+  geo,
+  out_file,
+  search_term = '',
+  tweet_per_query = 100,
+  tweet_max = 150,
+  since_id = None,
+  max_id = -1,
+  write = False
+  ):
   tweet_count = 0
   # all_tweets = pd.DataFrame()
   while tweet_count < tweet_max:
