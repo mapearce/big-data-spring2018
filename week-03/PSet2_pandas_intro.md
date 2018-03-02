@@ -81,8 +81,6 @@ After running your code, you should have either a new column in your DataFrame o
 ### Solution
 
 ```python
-df.head()
-df['hour'].unique()
 
 for i in range(0, 168, 24):
   j = range(0,168,1)[i - 5]
