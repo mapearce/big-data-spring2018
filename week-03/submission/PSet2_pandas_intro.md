@@ -124,13 +124,13 @@ Pick three times (or time ranges) and use the latitude and longitude to produce 
 
 #Create new dataframe with these columns
 df5 = df[['hour', 'count', 'lat', 'lon', 'date_new']].copy()
-#Got my df6 definition formula from: https://stackoverflow.com/questions/33271098/python-get-a-frequency-count-based-on-two-columns-variables-in-pandas-datafra
 
 #Create a column called 'Occurrences' where it counts up the number of pings to a given lat/long on a given hour of a given day
+#Got my df6 definition formula from: https://stackoverflow.com/questions/33271098/python-get-a-frequency-count-based-on-two-columns-variables-in-pandas-datafra
 df6 = df5.groupby(['lat', 'lon', 'hour', 'date_new']).size().reset_index(name='Occurrences')
 
 #Check to make sure there are some times there are multiple pings at same lat/lon location:
-#df6['Occurrences'][df6['Occurrences'] > 1].count()
+#df6['Occurrences'][df6['Occurrences'] > 1]
 
 #Restrict the analysis to July 4
 df7 = df6[pd.to_datetime(df6['date_new']) == '2017-07-04']
