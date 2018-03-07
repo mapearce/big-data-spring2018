@@ -173,11 +173,11 @@ def get_tweets(
 # Setup a Lat Lon
 latlng = '42.359416,-71.093993' # Eric's office (ish)
 # Setup a search distance
-radius = '1mi'
+radius = '5mi'
 # See tweepy API reference for format specifications
 geocode_query = latlng + ',' + radius
 file_name = 'data/tweets.json'
-t_max = 200
+t_max = 2000
 
 get_tweets(geo = geocode_query, tweet_max = t_max, write = True, out_file = file_name)
 ```
