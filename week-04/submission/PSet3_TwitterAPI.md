@@ -129,14 +129,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-tweets.dtypes
+#tweets.dtypes
 loc_tweets = tweets[tweets['location'] != '']
 count_tweets = loc_tweets.groupby('location')['id'].count()
 df_count_tweets = count_tweets.to_frame()
-df_count_tweets
-df_count_tweets.columns
+#df_count_tweets
+#df_count_tweets.columns
 df_count_tweets.columns = ['count']
-df_count_tweets
+#df_count_tweets
 
 #tweets['location'].unique()
 #I had this one tweet whose location, "Boston Ma$$," was throwing me an error so I had to delete it...
@@ -146,24 +146,24 @@ df_count_tweets.sort_values(['count'], ascending = False)
 
 
 #RegEx for Boston ONLY and everyone else gets categorized as "Elsewhere" (Yes, including Cambridge, Somerville, etc #sorrynotsorry)
-s4 = pd.Series(tweets['location'])
-#s4.head(30)
-#s4.describe()
-s4 = s4.str.strip()
-s4 = s4.str.lower()
-#s4.head(50)
-tweets['new_location'] = s4.str.contains('boston',na=False)
+bosMaker = pd.Series(tweets['location'])
+#bosMaker.head(30)
+#bosMaker.describe()
+bosMaker = bosMaker.str.strip()
+bosMaker = bosMaker.str.lower()
+#bosMaker.head(50)
+tweets['new_location'] = bosMaker.str.contains('boston',na=False)
 tweets.head()
-[tweets['new_location'] == True] = 'Boston'
-tweets['BostonOrNot'].replace(False,'Elsewhere', inplace = True)
-tweets.head(50)
-#tweets[tweets['new_location'] == False] = 'Elsewhere'
 
-pieTweet = tweets.groupby('BostonOrNot').count()
-#pieTweet.head()
+tweets['new_location'].replace(True,'Boston', inplace=True)
+tweets['new_location'].replace(False,'Elsewhere', inplace = True)
+#tweets.head(50)
+
+pieTweet = tweets.groupby('new_location').count()
+pieTweet.head()
 
 #I've created an extremely legible breakdown of unique locations
-plt.pie(pieTweet['new_location'], labels = tweets['BostonOrNot'].unique())
+plt.pie(pieTweet['location'], labels = tweets['new_location'].unique())
 ```
 
 
@@ -184,7 +184,7 @@ Pick a search term (e.g., "housing", "climate", "flood") and collect tweets cont
 
 ```python
 searchfile = 'data/searchTweets.json'
-searchTweets = get_tweets(geo = geocode_query, search_term = 'housing', tweet_max = t_max, write = True, out_file = searchfile)
+searchTweets = get_tweets(geo = geocode_query, search_term = 'water', tweet_max = t_max, write = True, out_file = searchfile)
 
 ```
 
@@ -194,15 +194,29 @@ Clean the search term data as with the previous data.
 
 ```python
 
-#searchTweets.dtypes
 sea_tweets = searchTweets[searchTweets['location'] != '']
 countSea_tweets = sea_tweets.groupby('location')['id'].count()
 df_countSea_tweets = countSea_tweets.to_frame()
-df_countSea_tweets
-df_countSea_tweets.columns
+#df_countSea_tweets
+#df_countSea_tweets.columns
 df_countSea_tweets.columns = ['count']
-#df_count_tweets
-df_count_tweets1.sort_values(['count'], ascending = False)
+#df_countSea_tweets
+df_countSea_tweets.sort_values(['count'], ascending = False)
+
+
+#RegEx for Boston ONLY and everyone else gets categorized as "Elsewhere" (Yes, including Cambridge, Somerville, etc #sorrynotsorry)
+bosMakerSea = pd.Series(searchTweets['location'])
+#bosMakerSea.head(30)
+#bosMakerSea.describe()
+bosMakerSea = bosMakerSea.str.strip()
+bosMakerSea = bosMakerSea.str.lower()
+#bosMakerSea.head(50)
+searchTweets['new_location'] = bosMakerSea.str.contains('boston',na=False)
+#searchTweets.head(50)
+
+searchTweets['new_location'].replace(True,'Boston', inplace=True)
+searchTweets['new_location'].replace(False,'Elsewhere', inplace = True)
+searchTweets.head(50)
 
 ```
 
@@ -213,7 +227,8 @@ Create a scatterplot showing all of the tweets that include your search term tha
 
 ```python
 #searchTweets.head()
-geoSeaTweets = searchTweets[np.isfinite(searchTweets['lat'])]
+#searchTweets.dtypes
+geoSeaTweets = searchTweets[np.isfinite(searchTweets['lon'])]
 #geoSeaTweets.head(50)
 geoSeaTweets.plot(kind='scatter', x='lon', y='lat', color='blue')
 #Only one geotagged tweet! INCONCEIVABLE!
