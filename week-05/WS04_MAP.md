@@ -103,12 +103,12 @@ red_path = os.path.join(DATA, 'b4.tif')
 nir_path = os.path.join(DATA, 'b5.tif')
 
 # Load in Red band
-red_data = gdal.Open(b4_raster)
+red_data = gdal.Open(red_path)
 red_band = red_data.GetRasterBand(1)
 red = red_band.ReadAsArray()
 
 # Load in Near-infrasred band
-nir_data = gdal.Open(b5_raster)
+nir_data = gdal.Open(nir_path)
 nir_band = nir_data.GetRasterBand(1)
 nir = nir_band.ReadAsArray()
 ```
@@ -184,6 +184,7 @@ tirs_data = gdal.Open(tirs_path)
 tirs_band = tirs_data.GetRasterBand(1)
 tirs = tirs_band.ReadAsArray()
 tirs = tirs.astype(np.float32)
+tirs
 ```
 
 We now need to read in some correction values stored in the Landsat metadata in order to convert the values stored in the band to radiances. You can do this the easy (and tedious) way or the slightly harder (and automatic) way. The easy way is by opening the file and manually searching. Feel free to do this, jotting down values as you find them. We're looking for:
