@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Learning D3</title>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.js" charset="utf-8"></script>
+</head>
+
+<body>
+
+  <!-- 40, 90, 30, 60 -->
+  <!-- <svg width="160" height="180">
+    <rect x="30" width="20" height="40" fill="#1abc9c"></rect>
+    <rect x="60" width="20" height="90" fill="#27ae60"></rect>
+    <rect x="90" width="20" height="30" fill="#16a085"></rect>
+    <rect x="120" width="20" height="60" fill="#2ecc71"></rect>
+  </svg> -->
+
+  <script>
+    var elRaton = [40, 90, 30, 60, 20, 40, 100, 50, 70, 75];
+    var neigh311 = [];
+
+    d3.csv("data/neigh_311.csv", function(d) {
+      return{
+        neigh : d.neighborhood,
+        num_311 : +d.num_311
+      };
+    }, function(error, rows){
+      neigh311 = rows;
+      console.log(neigh311);
+      createVisualization();
+    });
+
+function createVisualization() {
+
+    var w = 150;
+    var h = 175;
+
+    var arrayLength = neigh311.length;
+    var maxValue = d3.max(neigh311, function(d) { return +d.num_311 });
+    var x_axisLength = 100;
+    var y_axisLength = 100;
+
+    var yScale = d3.scaleLinear()
+    .domain([0, maxValue])
+    .range([0, y_axisLength]);
+
+    var svg = d3.select("body")
+      .append("svg")
+      .attr("width",w)
+      .attr("height",h);
+
+    var tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "12px")
+      .style("z-index", "10")
+      .style("visibility", "hidden");
+
+    svg.selectAll("rect")
+      .data(neigh311)
+      .enter()
+      .append("rect")
+      .attr("x", function (d, i){
+        return i * (x_axisLength / arrayLength) + 30;
+      })
+      .attr("y", d => h - yScale(d.num_311))
+      .attr("width", (x_axisLength / arrayLength) - 1)
+      .attr("height", function(d){
+        return yScale(d.num_311);
+      })
+      .attr("fill", "blue")
+      .on("mouseover", function(d){
+        return tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px").text(d.neigh + ": " + d.num_311);
+      });
+
+
+    svg.append("line")
+      .attr("x1", 30)
+      .attr("y1", 75)
+      .attr("x2", 30)
+      .attr("y2", 175)
+      .attr("stroke-width", 2)
+      .attr("stroke", "black")
+
+      svg.append("line")
+        .attr("x1", 30)
+        .attr("y1", 175)
+        .attr("x2", 130)
+        .attr("y2", 175)
+        .attr("stroke-width", 2)
+        .attr("stroke", "black")
+
+      svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .text("# o' Rattos")
+        .attr("transform", "translate(20,20) rotate(-90)")
+};
+
+  </script>
+
+</body>
+
+</html>
