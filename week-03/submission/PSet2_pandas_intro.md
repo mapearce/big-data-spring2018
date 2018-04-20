@@ -31,6 +31,8 @@ import matplotlib.pylab as plt
 # Read in the data
 
 df = pd.read_csv('../data/skyhook_2017-07.csv', sep=',')
+# read in for PH
+df = pd.read_csv('/Users/phoebe/Dropbox (MIT)/big-data/data/skyhook_2017-07.csv', sep=',')
 
 # Create a new date column formatted as datetimes.
 df['date_new'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
@@ -88,7 +90,7 @@ for i in range(0, 168, 24):
     df['hour'].replace(range(j, j + 5, 1), range(0,5,1), inplace = True)
   else:
     df['hour'].replace(range(j + 5, i + 24, 1), range(0, 24, 1), inplace = True)
-
+#df['hour'].unique()
 ```
 
 ## Problem 3: Create a Timestamp Column
@@ -100,6 +102,7 @@ Now that you have both a date and a time (stored in a more familiar 24-hour rang
 ```python
 
 df['time_stamp'] = df['date_new'] + pd.to_timedelta(df['hour'], unit = 'h')
+df['time_stamp'].head()
 ```
 
 ## Problem 4: Create Two Line Charts of Activity by Hour
@@ -128,7 +131,6 @@ df5 = df[['hour', 'count', 'lat', 'lon', 'date_new']].copy()
 #Create a column called 'Occurrences' where it counts up the number of pings to a given lat/long on a given hour of a given day
 #Got my df6 definition formula from: https://stackoverflow.com/questions/33271098/python-get-a-frequency-count-based-on-two-columns-variables-in-pandas-datafra
 df6 = df5.groupby(['lat', 'lon', 'hour', 'date_new']).size().reset_index(name='Occurrences')
-
 #Check to make sure there are some times there are multiple pings at same lat/lon location:
 #df6['Occurrences'][df6['Occurrences'] > 1]
 
@@ -146,6 +148,15 @@ df8.plot(kind='scatter', x='lon',y='lat', s=df7['Occurrences'], color = 'blue', 
 df9.plot(kind='scatter', x='lon',y='lat', s=df7['Occurrences'], color = 'green', label = '2pm')
 df10.plot(kind='scatter', x='lon',y='lat', s=df7['Occurrences'], color = 'red', label = '6pm')
 
+## Michael, this is a creative approach and would work if the data were structured differently. If each row in the dataset were a single ping, then your method would work. However, remember we have a column called 'count' -- this is because each row is not a unique ping, but counts of pings. Run this code and see that for one row, there are 2,268 pings accounted for in one row of data.
+df['count'].unique()
+#This is why you are not seeing cumulative pings, as you note below. Given the structure of our data, here is one way to graph what you are trying to show above.
+
+## july 4th at 2pm and 6pm
+july4_2pm = df[df['time_stamp'] == pd.Timestamp('2017-07-04 14:00:00')]
+july4_2pm.plot.scatter(x = 'lon', y = 'lat', s = july4_2pm['count'] / 10)
+july4_6pm = df[df['time_stamp'] == pd.Timestamp('2017-07-04 18:00:00')]
+july4_6pm.plot.scatter(x = 'lon', y = 'lat', s = july4_6pm['count'] / 10)
 
 ```
 
