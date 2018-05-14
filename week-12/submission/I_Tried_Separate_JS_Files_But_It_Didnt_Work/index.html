@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>Mapping with D3</title>
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="https://d3js.org/d3-queue.v2.min.js"></script>
+
+	<style>
+	  .neighborhoods {
+			fill: none;
+			stroke: #fff;
+	  }
+
+		.axis .domain {
+		  display: none;
+		}
+
+		.hover {
+			stroke-width: 2px;
+			opacity: 0.5;
+		}
+	</style>
+
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<div id="chart"></div>
+
+	<script src="map.js"></script>
+
+	<script src="stacked.js"></script>
+
+
+
+</body>
+</html>

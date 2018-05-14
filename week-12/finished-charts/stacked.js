@@ -27,8 +27,8 @@ d3.csv("data/neigh_311.csv", function(d, i, columns) {
 
   var keys = data.columns.slice(1);
 
-  data.sort(function(a, b) { return b.total - a.total; });
-  x.domain(data.map(function(d) { return d.Name; }));
+  data.sort(function(a, b) {return b.total - a.total; });
+  x.domain(data.map(function(d) { console.log(d.Name); return d.Name; }));
   y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
   z.domain(keys);
 
@@ -39,7 +39,7 @@ d3.csv("data/neigh_311.csv", function(d, i, columns) {
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
-      .attr("x", function(d) { return x(d.data.Name); })
+      .attr("x", function(d) { console.log(x(d.data.Name)); return x(d.data.Name); })
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width", x.bandwidth());
