@@ -118,11 +118,11 @@
 	  if (error) throw error;
 
 	  var calls_pct = {}; // Create empty object for holding dataset
-		var stateById = {};
+		var neighById = {};
 		calls.forEach(function(d) {
 			// console.log((d.twit_count / d.tot_count) * 100)
 			calls_pct[d.id] = +((d.twit_count / d.tot_count) * 100); // Create property for each ID, give it value from rate
-			stateById[d.id] = d.Name.split(' ').join('_');
+			neighById[d.id] = d.Name.split(' ').join('_');
 		});
 
 	  // create and style neighborhoods
@@ -138,16 +138,16 @@
 				})
 
 				//The next line assigns each state a class based on its name: AK, AR, etc.
-				.attr("class", function(d) { return stateById[d.properties.OBJECTID]; })
+				.attr("class", function(d) { return neighById[d.properties.OBJECTID]; })
 
 				//This part adds the class "hover" to the state and its matching rectangle in the chart
 				.on("mouseover", function(d) {
 					console.log(d);
-					d3.selectAll("." + stateById[d.properties.OBJECTID]).classed("hover",true);
+					d3.selectAll("." + neighById[d.properties.OBJECTID]).classed("hover",true);
 				})
 				.on("mouseout", function(d) {
 					d3.select(this).style("fill",function(d) { return color(calls_pct[d.properties.OBJECTID])});
-					d3.selectAll("." + stateById[d.properties.OBJECTID]).classed("hover", false);
+					d3.selectAll("." + neighById[d.properties.OBJECTID]).classed("hover", false);
 				});
 
 		// STACKED BAR CHART WITH HOVER
